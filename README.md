@@ -19,10 +19,10 @@
 
 | 言語 | URLの例 |
 |---|---|
-| 日本語 | `https://<ユーザー名>.github.io/clinical-challenges-map/?lang=ja` |
-| English | `https://<ユーザー名>.github.io/clinical-challenges-map/?lang=en` |
-| 한국어 | `https://<ユーザー名>.github.io/clinical-challenges-map/?lang=ko` |
-| 中文（简体） | `https://<ユーザー名>.github.io/clinical-challenges-map/?lang=zh` |
+| 日本語 | `https://hm-cmed.github.io/ClinicalDifficulties/?lang=ja` |
+| English | `https://hm-cmed.github.io/ClinicalDifficulties/?lang=en` |
+| 한국어 | `https://hm-cmed.github.io/ClinicalDifficulties/?lang=ko` |
+| 中文（简体） | `https://hm-cmed.github.io/ClinicalDifficulties/?lang=zh` |
 
 `?lang=` がない場合は、前回選んだ言語 → ブラウザの言語設定の順に決まります（いずれも該当しなければ英語）。文献の書誌（タイトル・著者・雑誌名）は原文の英語のまま表示し、検索も英語で行います。
 
@@ -41,6 +41,8 @@ Hiroshi Mihara, *Designing AI-Driven Medical Education*（Cambridge Scholars Pub
 
 職種タグと課題カテゴリは、文献タイトルと付録Hの小見出しへのキーワード照合で自動付与しています。本文の対象者や結果を確認したものではありません。
 
+**公開ページ：https://hm-cmed.github.io/ClinicalDifficulties/**
+
 ## 手元で開く
 
 フォルダ内の `index.html` をダブルクリックするだけで動きます（サーバー不要・ビルド不要）。
@@ -55,14 +57,14 @@ Hiroshi Mihara, *Designing AI-Driven Medical Education*（Cambridge Scholars Pub
    git add .
    git commit -m "初版：医療現場の課題マップ"
    git branch -M main
-   git remote add origin https://github.com/<ユーザー名>/clinical-challenges-map.git
+   git remote add origin https://github.com/hm-cmed/ClinicalDifficulties.git
    git push -u origin main
    ```
 
 3. リポジトリの **Settings → Pages** で、**Source: Deploy from a branch**、**Branch: `main` / `(root)`** を選んで Save。
-4. 1〜2分後に `https://<ユーザー名>.github.io/clinical-challenges-map/` で公開されます。
+4. 1〜2分後に `https://hm-cmed.github.io/ClinicalDifficulties/` で公開されます。
 
-> git を使わない場合は、リポジトリ画面の **Add file → Upload files** に、このフォルダの中身（`index.html`・`assets`・`docs`・`tools`・`README.md`・`.nojekyll`）をドラッグ＆ドロップしてもかまいません。
+> ブラウザの **Add file → Upload files** でアップロードすると、フォルダ構成（`assets/js/`・`assets/css/`）が崩れて表示されなくなることがあります。更新は git で push するか、GitHub 上で個々のファイルを直接編集してください。
 >
 > すでに初版を公開済みの場合は、このフォルダの中身で上書きして `git add . ; git commit -m "4言語対応" ; git push` を実行してください。
 
