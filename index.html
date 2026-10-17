@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>医療現場の課題マップ｜職種 × 15領域でみる文献エビデンス</title>
+<meta name="description" content="医師・看護職・薬剤師・リハ職など医療専門職が現場で感じている課題を、15の共通コンピテンシー領域に整理した文献から可視化するWebアプリ。日本語・English・한국어・中文に対応。">
+<meta property="og:title" content="医療現場の課題マップ / Clinical Challenges Map">
+<meta property="og:description" content="どの職種が、どんな課題を感じているのか ― 15の共通コンピテンシー領域と700件超の文献から。Which professions face which challenges — across 15 shared competency domains.">
+<link rel="alternate" hreflang="ja" href="?lang=ja">
+<link rel="alternate" hreflang="en" href="?lang=en">
+<link rel="alternate" hreflang="ko" href="?lang=ko">
+<link rel="alternate" hreflang="zh-Hans" href="?lang=zh">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23184f95'/%3E%3Crect x='6' y='6' width='9' height='9' rx='2' fill='%23cde2fb'/%3E%3Crect x='17' y='6' width='9' height='9' rx='2' fill='%236da7ec'/%3E%3Crect x='6' y='17' width='9' height='9' rx='2' fill='%233987e5'/%3E%3Crect x='17' y='17' width='9' height='9' rx='2' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="assets/js/i18n.js"></script>
+<script>
+  // 表示言語（?lang= → 前回の選択 → ブラウザの言語 の順）とテーマを描画前に決める
+  (function () {
+    var codes = window.I18N.langs.map(function (l) { return l.code; });
+    function norm(v) { v = String(v || '').toLowerCase(); var c = v.slice(0, 2); return codes.indexOf(c) >= 0 ? c : null; }
+    var lang = null;
+    try { lang = norm(new URLSearchParams(location.search).get('lang')); } catch (e) {}
+    if (!lang) { try { lang = norm(localStorage.getItem('ccm-lang')); } catch (e) {} }
+    if (!lang) { var nav = navigator.languages || [navigator.language]; for (var i = 0; i < nav.length && !lang; i++) lang = norm(nav[i]); }
+    lang = lang || 'en';
+    window.__CCM_LANG = lang;
+    var info = window.I18N.langs.filter(function (l) { return l.code === lang; })[0];
+    document.documentElement.lang = info.html;
+    var link = document.createElement('link');
+    link.rel = 'stylesheet'; link.setAttribute('data-font', lang);
+    link.href = 'https://fonts.googleapis.com/css2?' + window.I18N.fonts[lang] + '&display=swap';
+    document.head.appendChild(link);
+    try { var t = localStorage.getItem('ccm-theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+<a class="skip" href="#main">本文へ移動</a>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="head-top">
+      <p class="eyebrow" id="eyebrow">Designing AI-Driven Medical Education ｜ Appendix F・H に基づく文献マップ</p>
+      <div class="head-tools">
+        <div class="lang-switch seg" id="langSwitch" role="group" aria-label="表示言語"></div>
+        <button class="theme-btn" id="themeBtn" type="button" aria-label="表示テーマを切り替え">表示：自動</button>
+      </div>
+    </div>
+    <h1><span id="titleMain">医療現場の課題マップ</span><small id="subtitle">どの職種が、どんな課題を感じているのか ― 15の共通コンピテンシー領域から</small></h1>
+    <p class="lead" id="lead">医師・看護職・薬剤師・リハビリ職などが臨床現場で直面している課題を、職種横断の15領域に整理した文献から可視化します。</p>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+<div class="tabs-bar">
+  <nav class="tabs wrap" id="tabs" aria-label="表示の切り替え">
+    <a href="#/map" data-view="map">課題マップ</a>
+    <a href="#/prof/nurse" data-view="prof">職種から見る</a>
+    <a href="#/domain/1" data-view="domain">領域から見る</a>
+    <a href="#/refs" data-view="refs">文献を探す</a>
+    <a href="#/about" data-view="about">このアプリについて</a>
+  </nav>
+</div>
+
+<main id="main" class="wrap" tabindex="-1"></main>
+
+<div class="drawer-backdrop" id="backdrop"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true">
+  <div class="drawer-head">
+    <button class="drawer-close" id="drawerClose" type="button" aria-label="閉じる">×</button>
+    <p class="eyebrow" id="drawerEyebrow"></p>
+    <h2 id="drawerTitle"></h2>
+    <div id="drawerSub" class="note drawer-sub"></div>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+<div id="tooltip" role="tooltip" aria-hidden="true"></div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p id="footSrc">出典：Hiroshi Mihara, <i>Designing AI-Driven Medical Education</i>（Cambridge Scholars Publishing, 刊行準備中）Appendix F・Appendix H</p>
+    <p id="footNote"></p>
+  </div>
+</footer>
+
+<script src="assets/js/appendix-h.js"></script>
+<script src="assets/js/taxonomy.js"></script>
+<script src="assets/js/model.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
