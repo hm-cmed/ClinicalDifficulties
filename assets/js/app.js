@@ -647,7 +647,8 @@
 
   function downloadCSV(list) {
     var head = str('csvHead');
-    function esc(v) { v = v == null ? '' : String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+    // Excel で数式として実行されないよう、= + - @ で始まる値には先頭に ' を付ける
+    function esc(v) { v = v == null ? '' : String(v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
     var rows = list.map(function (r, i) {
       return [i + 1, r.cite.year || '', r.cite.authors, r.cite.title || '', r.cite.doi || '', r.cite.pmid || '',
         r.domains.map(function (d) { return d + '. ' + dName(DOM.get(d)); }).join(' / '),
